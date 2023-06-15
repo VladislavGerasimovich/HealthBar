@@ -41,7 +41,5 @@ public class HealthBar : MonoBehaviour
             _slider.value = Mathf.Lerp(currentValue, _nextValue, elapsedTime/_duration);
             yield return null;
         }
-
-        StopCoroutine(_changeValueJob);
     }
 }

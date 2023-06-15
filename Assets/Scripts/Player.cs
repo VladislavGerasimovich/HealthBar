@@ -5,45 +5,33 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Buttons _buttons;
-
-    private int _health = 100;
+    private int _maxHealth = 100;
     private int _currentHealth;
+    private int _damage = 10;
+    private int _heal = 10;
 
     public event UnityAction<int, int> HealthChanged;
 
     private void Start()
     {
-        _currentHealth = _health;
+        _currentHealth = _maxHealth;
     }
 
-    private void OnEnable()
-    {
-        _buttons.DamageReceived += ApplyDamage;
-        _buttons.HealReceived += RestoreHealth;
-    }
-
-    private void OnDisable()
-    {
-        _buttons.DamageReceived -= ApplyDamage;
-        _buttons.HealReceived -= RestoreHealth;
-    }
-
-    private void ApplyDamage(int damage)
+    public void ApplyDamage()
     {
         if(_currentHealth > 0)
         {
-            _currentHealth -= damage;
-            HealthChanged.Invoke(_currentHealth, _health);
+            _currentHealth -= _damage;
+            HealthChanged.Invoke(_currentHealth, _maxHealth);
         }
     }
 
-    private void RestoreHealth(int healing)
+    public void RestoreHealth()
     {
-        if (_currentHealth < _health)
+        if (_currentHealth < _maxHealth)
         {
-            _currentHealth += healing;
-            HealthChanged.Invoke(_currentHealth, _health);
+            _currentHealth += _heal;
+            HealthChanged.Invoke(_currentHealth, _maxHealth);
         }
     }
 }
