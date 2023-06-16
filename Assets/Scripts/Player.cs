@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     private int _maxHealth = 100;
+    private int _minHealth = 0;
     private int _currentHealth;
     private int _damage = 10;
     private int _heal = 10;
@@ -19,9 +20,10 @@ public class Player : MonoBehaviour
 
     public void ApplyDamage()
     {
-        if(_currentHealth > 0)
+        if(_currentHealth > _minHealth)
         {
             _currentHealth -= _damage;
+            _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
             HealthChanged.Invoke(_currentHealth, _maxHealth);
         }
     }
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
         if (_currentHealth < _maxHealth)
         {
             _currentHealth += _heal;
+            _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
             HealthChanged.Invoke(_currentHealth, _maxHealth);
         }
     }
