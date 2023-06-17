@@ -8,8 +8,6 @@ public class Player : MonoBehaviour
     private int _maxHealth = 100;
     private int _minHealth = 0;
     private int _currentHealth;
-    private int _damage = 10;
-    private int _heal = 10;
 
     public event UnityAction<int, int> HealthChanged;
 
@@ -18,23 +16,10 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
     }
 
-    public void ApplyDamage()
+    public void ChangeHealth(int amountOfHealth)
     {
-        if(_currentHealth > _minHealth)
-        {
-            _currentHealth -= _damage;
-            _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
-            HealthChanged.Invoke(_currentHealth, _maxHealth);
-        }
-    }
-
-    public void RestoreHealth()
-    {
-        if (_currentHealth < _maxHealth)
-        {
-            _currentHealth += _heal;
-            _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
-            HealthChanged.Invoke(_currentHealth, _maxHealth);
-        }
+        _currentHealth += amountOfHealth;
+        _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
+        HealthChanged.Invoke(_currentHealth, _maxHealth);
     }
 }
