@@ -5,21 +5,31 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    private int _maxHealth = 100;
-    private int _minHealth = 0;
-    private int _currentHealth;
+    private int _minHealth;
 
     public event UnityAction<int, int> HealthChanged;
 
-    private void Start()
+    public int MaxHealth {  get; private set; }
+    public int CurrentHealth { get; private set; }
+
+    private void Awake()
     {
-        _currentHealth = _maxHealth;
+        _minHealth = 0;
+        MaxHealth = 100;
+        CurrentHealth = MaxHealth;
     }
 
-    public void ChangeHealth(int amountOfHealth)
+    public void TakeDamage(int amountOfHealth)
     {
-        _currentHealth += amountOfHealth;
-        _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
-        HealthChanged.Invoke(_currentHealth, _maxHealth);
+        CurrentHealth += amountOfHealth;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, _minHealth, MaxHealth);
+        HealthChanged.Invoke(CurrentHealth, MaxHealth);
+    }
+
+    public void IncreaseHealth(int amountOfHealth)
+    {
+        CurrentHealth += amountOfHealth;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, _minHealth, MaxHealth);
+        HealthChanged.Invoke(CurrentHealth, MaxHealth);
     }
 }

@@ -16,6 +16,13 @@ public class HealthBar : MonoBehaviour
     private float _nextValue;
     private float _duration;
 
+    private void Awake()
+    {
+        _slider.value = 1;
+        _smoothSlider.value = 1;
+        _duration = 1.5f;
+    }
+
     private void OnEnable()
     {
         _player.HealthChanged += OnValueChanged;
@@ -26,22 +33,10 @@ public class HealthBar : MonoBehaviour
         _player.HealthChanged -= OnValueChanged;
     }
 
-    private void Awake()
+    private void Start()
     {
-        _currentHealthValue.text = "100";
-        _maxHealthValue.text = $"/ {100}";
-        _slider.value = 1;
-        _smoothSlider.value = 1;
-        _duration = 1.5f;
-    }
-
-    private void OnValueChanged(int value, int maxValue)
-    {
-        _nextValue = (float)value / maxValue;
-        _slider.value = _nextValue;
-        _currentHealthValue.text = value.ToString();
-        _maxHealthValue.text = $"/ {maxValue.ToString()}";
-        StartCoroutine(ChangeValue());
+        _currentHealthValue.text = _player.MaxHealth.ToString();
+        _maxHealthValue.text = $"/ {_player.CurrentHealth}";
     }
 
     private IEnumerator ChangeValue()
@@ -56,5 +51,14 @@ public class HealthBar : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void OnValueChanged(int value, int maxValue)
+    {
+        _nextValue = (float)value / maxValue;
+        _slider.value = _nextValue;
+        _currentHealthValue.text = value.ToString();
+        _maxHealthValue.text = $"/ {maxValue}";
+        StartCoroutine(ChangeValue());
     }
 }
